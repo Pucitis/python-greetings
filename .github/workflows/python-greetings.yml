@@ -1,0 +1,23 @@
+# This is a basic workflow to help you get started with Actions
+
+name: pipeline for python microservice
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "main" ]
+  
+  workflow_dispatch:
+
+jobs:
+  build-docker-image:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t martinowl/python-greetings:latest . 
+      
+      - name: Push image
+        run: docker push martinowl/python-greetings:latest
+  
+  
