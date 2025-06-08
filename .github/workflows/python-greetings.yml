@@ -44,16 +44,48 @@ jobs:
           docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_dev
 
 
-  # deploy-to-stg:
-  #   runs-on: docker-greetings
+  deploy-to-stg:
+    runs-on: docker-greetings
+    needs: tests-on-dev
+    steps:
+      - name: deploy to dev
+        run: |
+          echo "Deploying Python microservice to STG environment"
+          docker pull martinowl/python-greetings-app:latest
+          docker-compose stop greetings-app-stg
+          docker-compose rm -f greetings-app-stg
+          docker-compose up -d greetings-app-stg
 
-  # tests-on-stg:
-  #   runs-on: docker-greetings
+  tests-on-stg:
+    runs-on: docker-greetings
+    needs: deploy-to-stg
+    steps:
+      - name: tests-on-dev
+        run: |
+          echo "Running integration tests on STG..."
+          docker pull martinowl/api-tests:latest
+          docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_stg
 
-  # deploy-to-prod:
-  #   runs-on: docker-greetings
+  deploy-to-prod:
+    runs-on: docker-greetings
+    needs: tests-on-stg
+    steps:
+      - name: deploy to dev
+        run: |
+          echo "Deploying Python microservice to STG environment"
+          docker pull martinowl/python-greetings-app:latest
+          docker-compose stop greetings-app-stg
+          docker-compose rm -f greetings-app-stg
+          docker-compose up -d greetings-app-stg
 
-  # tests-on-prod:
-  #   runs-on: docker-greetings
+  tests-on-prod:
+    runs-on: docker-greetings
+    needs: deploy-to-prod
+    steps:
+      - name: tests-on-dev
+        run: |
+          echo "Running integration tests on STG..."
+          docker pull martinowl/api-tests:latest
+          docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_stg
 
   
