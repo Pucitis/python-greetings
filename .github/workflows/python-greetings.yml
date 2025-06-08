@@ -28,8 +28,8 @@ jobs:
           echo "Deploying Python microservice to DEV environment"
           docker pull martinowl/python-greetings-app:latest
           docker-compose stop greetings-app-dev
-          docker compose rm -f greetings-app-dev
-          docker compose up -d greetings-app-dev
+          docker-compose rm -f greetings-app-dev
+          docker-compose up -d greetings-app-dev
 
   
   # tests-on-dev:
