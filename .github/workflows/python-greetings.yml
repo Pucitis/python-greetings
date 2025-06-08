@@ -19,5 +19,32 @@ jobs:
       
       - name: Push image
         run: docker push martinowl/python-greetings:latest
+      
+  deploy-to-dev:
+    runs-on: docker-greetings
+    steps:
+      - name: deploy to dev
+    run: |
+      echo "Deploying Python microservice to DEV environment"
+      docker pull martinowl/python-greetings-app:latest
+      docker-compose stop greetings-app-dev
+      docker compose rm -f greetings-app-dev
+      docker compose up -d greetings-app-dev
+
   
+  # tests-on-dev:
+  #   runs-on: docker-greetings
+
+  # deploy-to-stg:
+  #   runs-on: docker-greetings
+
+  # tests-on-stg:
+  #   runs-on: docker-greetings
+
+  # deploy-to-prod:
+  #   runs-on: docker-greetings
+
+  # tests-on-prod:
+  #   runs-on: docker-greetings
+
   
