@@ -72,11 +72,11 @@ jobs:
     steps:
       - name: deploy to dev
         run: |
-          echo "Deploying Python microservice to STG environment"
+          echo "Deploying Python microservice to PROD environment"
           docker pull martinowl/python-greetings-app:latest
-          docker-compose stop greetings-app-stg
-          docker-compose rm -f greetings-app-stg
-          docker-compose up -d greetings-app-stg
+          docker-compose stop greetings-app-prod
+          docker-compose rm -f greetings-app-prod
+          docker-compose up -d greetings-app-prod
 
   tests-on-prod:
     runs-on: docker-greetings
@@ -84,8 +84,8 @@ jobs:
     steps:
       - name: tests-on-dev
         run: |
-          echo "Running integration tests on STG..."
+          echo "Running integration tests on PROD..."
           docker pull martinowl/api-tests:latest
-          docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_stg
+          docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_prod
 
   
