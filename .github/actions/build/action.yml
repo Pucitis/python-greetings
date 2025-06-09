@@ -1,0 +1,14 @@
+name: 'Build and deploy'
+description: 'Actiion to build and deploy Greetings app'
+runs:
+  using: "composite"
+  steps:
+    - name: Build image
+      run: docker build -t martinowl/python-greetings-app:latest . 
+      shell: bash
+
+    - name: Push image
+      run: docker push martinowl/api-tests:latest
+      shell: bash
+
+
