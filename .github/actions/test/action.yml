@@ -1,0 +1,21 @@
+name: 'Test the environments'
+description: 'Running api tests for environments'
+inputs:
+  test-env:  # id of input
+    description: 'Environment to test'
+    required: true
+    default: 'dev'
+
+runs:
+  using: "composite"
+  steps:
+    - name: running tests
+      run: |
+        echo "Running integration tests on $INPUT_TEST_ENV..."
+        docker pull martinowl/api-tests:latest
+        docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_$INPUT_TEST_ENV
+      shell: bash
+      env:
+        INPUT_TEST_ENV: ${{ inputs.test-env }}
+      
+

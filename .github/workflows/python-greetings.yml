@@ -23,18 +23,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy
         with:
-          environment: dev
+          deploy-to: dev
 
   
   tests-on-dev:
     runs-on: docker-greetings
     needs: deploy-to-dev
     steps:
-      - name: tests-on-dev
-        run: |
-          echo "Running integration tests on DEV..."
-          docker pull martinowl/api-tests:latest
-          docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_dev
+      - uses: ./.github/actions/test
+        with:
+          deploy-to: dev      
 
 
   deploy-to-stg:
@@ -44,17 +42,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy
         with:
-          environment: stg
+          deploy-to: stg
 
   tests-on-stg:
     runs-on: docker-greetings
     needs: deploy-to-stg
     steps:
-      - name: tests-on-dev
-        run: |
-          echo "Running integration tests on STG..."
-          docker pull martinowl/api-tests:latest
-          docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_stg
+      - uses: ./.github/actions/test
+        with:
+          deploy-to: stg 
 
   deploy-to-prod:
     runs-on: docker-greetings
@@ -63,16 +59,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy
         with:
-          environment: prod
+          deploy-to: prod
 
   tests-on-prod:
     runs-on: docker-greetings
     needs: deploy-to-prod
     steps:
-      - name: tests-on-dev
-        run: |
-          echo "Running integration tests on PROD..."
-          docker pull martinowl/api-tests:latest
-          docker run --network=host --rm martinowl/api-tests:latest run greetings greetings_prod
+      - uses: ./.github/actions/test
+        with:
+          deploy-to: prod
 
   
