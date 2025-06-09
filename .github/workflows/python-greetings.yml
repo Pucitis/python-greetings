@@ -20,13 +20,9 @@ jobs:
     runs-on: docker-greetings
     needs: build-docker-image
     steps:
-      - name: deploy to dev
-        run: |
-          echo "Deploying Python microservice to DEV environment"
-          docker pull martinowl/python-greetings-app:latest
-          docker-compose stop greetings-app-dev
-          docker-compose rm -f greetings-app-dev
-          docker-compose up -d greetings-app-dev
+      - uses: ./github/actions/deploy
+        with:
+          environment: dev
 
   
   tests-on-dev:
@@ -44,13 +40,9 @@ jobs:
     runs-on: docker-greetings
     needs: tests-on-dev
     steps:
-      - name: deploy to dev
-        run: |
-          echo "Deploying Python microservice to STG environment"
-          docker pull martinowl/python-greetings-app:latest
-          docker-compose stop greetings-app-stg
-          docker-compose rm -f greetings-app-stg
-          docker-compose up -d greetings-app-stg
+      - uses: ./github/actions/deploy
+        with:
+          environment: stg
 
   tests-on-stg:
     runs-on: docker-greetings
@@ -66,13 +58,9 @@ jobs:
     runs-on: docker-greetings
     needs: tests-on-stg
     steps:
-      - name: deploy to dev
-        run: |
-          echo "Deploying Python microservice to PROD environment"
-          docker pull martinowl/python-greetings-app:latest
-          docker-compose stop greetings-app-prod
-          docker-compose rm -f greetings-app-prod
-          docker-compose up -d greetings-app-prod
+      - uses: ./github/actions/deploy
+        with:
+          environment: dev
 
   tests-on-prod:
     runs-on: docker-greetings

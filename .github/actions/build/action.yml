@@ -1,5 +1,5 @@
-name: 'Build and deploy'
-description: 'Actiion to build and deploy Greetings app'
+name: 'Build and Push'
+description: 'Actiion to build and push Greetings app'
 runs:
   using: "composite"
   steps:

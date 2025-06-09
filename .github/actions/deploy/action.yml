@@ -1,0 +1,23 @@
+name: 'Deploy to environments'
+description: 'Deploy steps using docker-compose'
+inputs:
+  deploy-to:  # id of input
+    description: 'Environment to deploy to'
+    required: true
+    default: 'dev'
+
+runs:
+  using: "composite"
+  steps:
+    - name: deploy to 
+      run: |
+        echo "Deploying Python microservice to $INPUT_DEPLOY_TO environment"
+        docker pull martinowl/python-greetings-app:latest
+        docker-compose stop greetings-app-$INPUT_DEPLOY_TO
+        docker-compose rm -f greetings-app-$INPUT_DEPLOY_TO
+        docker-compose up -d greetings-app-$INPUT_DEPLOY_TO
+      shell: bash
+      env:
+        INPUT_DEPLOY_TO: ${{ inputs.deploy-to }}
+      
+
